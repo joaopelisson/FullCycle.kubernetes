@@ -16,6 +16,7 @@ import (
 func main() {
 	http.HandleFunc("/configmap", ConfigMap)
 	http.HandleFunc("/", Hello)
+	http.HandleFunc("/secret", secret)
 	fmt.Println("Iniciando servidor na porta 8000...")
 	if err := http.ListenAndServe(":8000", nil); err != nil {
 		log.Fatal("Erro ao iniciar servidor:", err)
@@ -30,7 +31,13 @@ func Hello(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func secret(w http.ResponseWriter, r *http.Request) {
+	username := os.Getenv("USER")
+	password := os.Getenv("PASSWORD")
 
+	fmt.Fprintf(w, "Secret data - Username: %s, Password: %s", username, password)
+}
+	
 func ConfigMap(w http.ResponseWriter, r *http.Request) {
 
 	data, err := ioutil.ReadFile("/go/myfamily/family.txt")
