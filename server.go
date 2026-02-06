@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"io/ioutil"
 )
 
 /**
@@ -13,6 +14,7 @@ import (
 **/
 
 func main() {
+	http.HandleFunc("/configmap", ConfigMap)
 	http.HandleFunc("/", Hello)
 	fmt.Println("Iniciando servidor na porta 8000...")
 	if err := http.ListenAndServe(":8000", nil); err != nil {
@@ -28,3 +30,15 @@ func Hello(w http.ResponseWriter, r *http.Request) {
 
 }
 
+
+func ConfigMap(w http.ResponseWriter, r *http.Request) {
+
+	data, err := ioutil.ReadFile("myfamilly/family.txt")
+	
+	if err != nil {
+		log.Fatalf("Error reading file: %v", err)
+	}
+
+	
+	fmt.Fprintf(w, "Family members: %s", string(data))	
+}
