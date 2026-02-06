@@ -17,14 +17,18 @@ spec:
       containers:
         - name: goserver
           image: "joaopelisson/hello-go:v2"
-          env:
-            - name: NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: goserver-env
-                  key: NAME
-            - name: AGE
-              valueFrom:
-                configMapKeyRef:
-                  name: goserver-env
-                  key: AGE
+          envFrom:
+            - configMapRef:
+                name: goserver-env
+          # EXAMPLE OF HOW TO USE CONFIGMAP AS ENVIRONMENT VARIABLES (02)
+          # env:
+          #   - name: NAME
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: goserver-env
+          #         key: NAME
+          #   - name: AGE
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: goserver-env
+          #         key: AGE
