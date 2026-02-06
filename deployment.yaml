@@ -5,10 +5,10 @@ metadata:
   labels:
     app: goserver
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: goserver
-  replicas: 1
   template:
     metadata:
       labels:
@@ -16,19 +16,20 @@ spec:
     spec:
       containers:
         - name: goserver
-          image: "joaopelisson/hello-go:v2"
+          image: joaopelisson/hello-go:v3.1
+
           envFrom:
             - configMapRef:
                 name: goserver-env
-          # EXAMPLE OF HOW TO USE CONFIGMAP AS ENVIRONMENT VARIABLES (02)
-          # env:
-          #   - name: NAME
-          #     valueFrom:
-          #       configMapKeyRef:
-          #         name: goserver-env
-          #         key: NAME
-          #   - name: AGE
-          #     valueFrom:
-          #       configMapKeyRef:
-          #         name: goserver-env
-          #         key: AGE
+
+          volumeMounts:
+            - name: config
+              mountPath: /go/myfamily
+
+      volumes:
+        - name: config
+          configMap:
+            name: configmap-family
+            items:
+              - key: members
+                path: family.txt
