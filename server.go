@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"io/ioutil"
+	"time"
 )
 
 /**
@@ -13,7 +14,12 @@ import (
 * Objective: Kubernetes deployment example.
 **/
 
+var startedAt = time.Now()
+
+
+
 func main() {
+	http.HandleFunc("/healthz", Healthz) 
 	http.HandleFunc("/configmap", ConfigMap)
 	http.HandleFunc("/", Hello)
 	http.HandleFunc("/secret", secret)
@@ -48,4 +54,17 @@ func ConfigMap(w http.ResponseWriter, r *http.Request) {
 
 	
 	fmt.Fprintf(w, "Family members: %s", string(data))	
+}
+
+func Healthz(w http.ResponseWriter, r *http.Request) {
+	uptime := time.Since(startedAt)
+	
+	if uptime.Seconds() > 25 {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Duration: %s - Unhealthy", uptime.String())
+	} else {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "OK - Uptime: %s", uptime.String())
+	}
+
 }
