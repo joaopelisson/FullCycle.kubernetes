@@ -59,7 +59,7 @@ func ConfigMap(w http.ResponseWriter, r *http.Request) {
 func Healthz(w http.ResponseWriter, r *http.Request) {
 	uptime := time.Since(startedAt)
 	
-	if uptime.Seconds() < 10 {
+	if uptime.Seconds() < 10 || uptime.Seconds() > 30 {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprintf(w, "Duration: %s - Unhealthy", uptime.String())
 	} else {
