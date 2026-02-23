@@ -18,6 +18,14 @@ spec:
         - name: goserver
           image: joaopelisson/hello-go:v3.5
 
+          resources:
+            requests:
+              cpu: 100m
+              memory: 20Mi
+            limits:
+              cpu: 500m
+              memory: 30Mi
+
           startupProbe:
             httpGet:
               path: /healthz
