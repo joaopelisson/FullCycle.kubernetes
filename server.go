@@ -57,14 +57,13 @@ func ConfigMap(w http.ResponseWriter, r *http.Request) {
 }
 
 func Healthz(w http.ResponseWriter, r *http.Request) {
-	uptime := time.Since(startedAt)
-	
-	if uptime.Seconds() < 10 || uptime.Seconds() > 30 {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "Duration: %s - Unhealthy", uptime.String())
-	} else {
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "OK - Uptime: %s", uptime.String())
-	}
-
+  duration := time.Since(startedAt)
+ 
+  if duration.Seconds() < 10 {
+    w.WriteHeader(500)
+    w.Write([]byte(fmt.Sprintf("Duration: %v", duration.Seconds())))
+  } else {
+    w.WriteHeader(200)
+    w.Write([]byte("ok"))
+  }
 }

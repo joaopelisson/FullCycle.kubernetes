@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: goserver
-          image: joaopelisson/hello-go:v3.5
+          image: joaopelisson/hello-go:v3.6
 
           resources:
             requests:
