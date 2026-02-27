@@ -20,10 +20,10 @@ spec:
 
           resources:
             requests:
-              cpu: 100m
+              cpu: "0.01"
               memory: 20Mi
             limits:
-              cpu: 500m
+              cpu: "0.05"
               memory: 30Mi
 
           startupProbe:
